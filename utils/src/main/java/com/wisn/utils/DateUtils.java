@@ -9,7 +9,7 @@ import java.util.Locale;
  * Created by wisn on 2017/10/8.
  */
 
-public class DataUtils {
+public class DateUtils {
 
     /**
      * @param str
