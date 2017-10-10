@@ -15,6 +15,9 @@ import android.view.WindowManager;
 
 public class DensityUtils {
 
+    private static int[] deviceWidthHeight = new int[2];
+
+
     /**
      * 根据手机的分辨率从 dip 的单位 转成为 px(像素)
      */
@@ -31,8 +34,11 @@ public class DensityUtils {
         return (int) (pxValue / scale + 0.5f);
     }
 
-    private static int[] deviceWidthHeight = new int[2];
-
+    /**
+     *
+     * @param context
+     * @return
+     */
     public static int[] getDeviceInfo(Context context) {
         if ((deviceWidthHeight[0] == 0) && (deviceWidthHeight[1] == 0)) {
             DisplayMetrics metrics = new DisplayMetrics();
