@@ -16,6 +16,7 @@ public class ShortUtils {
      * 检测是否存在快捷键
      *
      * @param activity Activity
+     *
      * @return 是否存在桌面图标
      */
     public static boolean hasShortcut(Activity activity) {
@@ -38,9 +39,9 @@ public class ShortUtils {
      * 为程序创建桌面快捷方式
      *
      * @param activity Activity
-     * @param res     res
+     * @param res      res
      */
-    public static void addShortcut(Activity activity,int res) {
+    public static void addShortcut(Activity activity, int res) {
 
         Intent shortcut = new Intent(
                 "com.android.launcher.action.INSTALL_SHORTCUT");
