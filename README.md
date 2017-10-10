@@ -20,6 +20,18 @@ project(':utils').projectDir = new File('library/utils')
 Utils  | Description |
 ----------|-------------|
 FileUtils | FileUtils |
+AppUtils | AppUtils |
+ArrayUtils | ArrayUtils |
+DateUtils | DateUtils |
+DensityUtils | DensityUtils |
+MD5Utils | MD5Utils |
+NetUtils | NetUtils |
+PreferencesUtils | PreferencesUtils |
+RegexUtils | RegexUtils |
+ShortUtils | ShortUtils |
+ToastUtils | ToastUtils |
+ZipUtils | ZipUtils |
+ColorUtils | ColorUtils |
 
 
 ## License
