@@ -2,10 +2,11 @@ package com.wisn.utils;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 /**
  * Created by wisn on 2017/3/13.
- * system need rooted
+ * system image  need rooted
  */
 
 public class SuUtils {
@@ -18,41 +19,133 @@ public class SuUtils {
      */
     public static void kill(String packageName) {
         initProcess();
-        killProcess(packageName);
+        work("am force-stop  " + packageName + " \n");
         close();
     }
 
     /**
-     *
      * @param packageName
      */
     public static void enable(String packageName) {
         initProcess();
-        enableApp(packageName);
+        work("pm enable  " + packageName + " \n");
         close();
     }
 
     /**
-     *
      * @param packageName
      */
     public static void disable(String packageName) {
         initProcess();
-        disableApp(packageName);
+        work("pm disable  " + packageName + " \n");
         close();
     }
 
     /**
-     *
      * @param packageName
      */
     public static void unInstall(String packageName) {
         initProcess();
         work(" uninstall " + packageName + " \n");
         close();
-
     }
 
+
+    /**
+     * 静默安装
+     *
+     * @param apkPath
+     *
+     * @return
+     */
+    public boolean clientInstall(String apkPath) {
+        PrintWriter PrintWriter = null;
+        Process process = null;
+        try {
+            process = Runtime.getRuntime().exec("su");
+            PrintWriter = new PrintWriter(process.getOutputStream());
+            PrintWriter.println("chmod 777 " + apkPath);
+            PrintWriter.println("export LD_LIBRARY_PATH=/vendor/lib:/system/lib");
+            PrintWriter.println("pm install -r " + apkPath);
+//          PrintWriter.println("exit");
+            PrintWriter.flush();
+            PrintWriter.close();
+            int value = process.waitFor();
+            return returnResult(value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (process != null) {
+                process.destroy();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 启动app
+     *
+     * @param packageName  com.exmaple.client/.MainActivity
+     * @param activityName com.exmaple.client/com.exmaple.client.MainActivity
+     *
+     * @return
+     */
+    public boolean startApp(String packageName, String activityName) {
+        boolean isSuccess = false;
+        String cmd = "am start -n " + packageName + "/" + activityName + " \n";
+        Process process = null;
+        try {
+            process = Runtime.getRuntime().exec(cmd);
+            int value = process.waitFor();
+            return returnResult(value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (process != null) {
+                process.destroy();
+            }
+        }
+        return isSuccess;
+    }
+
+
+    private boolean returnResult(int value) {
+        // 代表成功
+        if (value == 0) {
+            return true;
+        } else if (value == 1) { // 失败
+            return false;
+        } else { // 未知情况
+            return false;
+        }
+    }
+
+    /**
+     * @param packageName
+     *
+     * @return
+     */
+    public boolean clientUninstall(String packageName) {
+        PrintWriter PrintWriter = null;
+        Process process = null;
+        try {
+            process = Runtime.getRuntime().exec("su");
+            PrintWriter = new PrintWriter(process.getOutputStream());
+            PrintWriter.println("LD_LIBRARY_PATH=/vendor/lib:/system/lib ");
+            PrintWriter.println("pm uninstall " + packageName);
+            PrintWriter.flush();
+            PrintWriter.close();
+            int value = process.waitFor();
+            return returnResult(value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (process != null) {
+                process.destroy();
+            }
+        }
+        return false;
+    }
 
     /**
      * @param pid
@@ -60,17 +153,8 @@ public class SuUtils {
     public static void killProcessByPID(int pid) {
         //android.os.Process.killProcess(pid);
         initProcess();
-        String cmd = " kill  " + pid + " \n";
-        work(cmd);
+        work(" kill  " + pid + " \n");
         close();
-    }
-
-    /**
-     * 结束进程
-     */
-    private static void killProcess(String packageName) {
-        String cmd = "am force-stop  " + packageName + " \n";
-        work(cmd);
     }
 
 
@@ -86,22 +170,6 @@ public class SuUtils {
             }
     }
 
-    /**
-     * @param packageName
-     */
-    private static void enableApp(String packageName) {
-        String cmd = "pm enable  " + packageName + " \n";
-        work(cmd);
-
-    }
-
-    /**
-     * @param packageName
-     */
-    private static void disableApp(String packageName) {
-        String cmd = "pm disable  " + packageName + " \n";
-        work(cmd);
-    }
 
     /**
      * 结束进程
