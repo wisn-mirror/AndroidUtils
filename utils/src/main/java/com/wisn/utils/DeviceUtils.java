@@ -10,6 +10,9 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -161,6 +164,45 @@ public class DeviceUtils {
                 (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
         return sensorManager.getSensorList(Sensor.TYPE_ALL);
+    }
+    /**
+     * 获取cpu状态
+     *
+     * top -h
+     Usage: top [-m max_procs] [-n iterations] [-d delay] [-s sort_column] [-t] [-h]
+     -m num  Maximum number of processes to display. // 最多显示多少个进程
+     -n num  Updates to show before exiting. // 刷新次数
+     -d num  Seconds to wait between updates. // 刷新间隔时间（默认5秒）
+     -s col  Column to sort by  // 按哪列排序
+     -t      Show threads instead of processes. // 显示线程信息而不是进程
+     -h      Display this help screen. // 显示帮助文档
+     $ top -n 1
+     top -n 1
+     *
+     * @return
+     */
+    public static int getProcessCpuRate() {
+        int rate = 0;
+        try {
+            String Result;
+            Process p;
+            p = Runtime.getRuntime().exec("top -n 1 -m 1  -s cpu");
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((Result = br.readLine()) != null) {
+                if (Result.trim().length() < 1) {
+                    continue;
+                } else {
+                    String[] CPUusr = Result.split("%");
+                    String[] CPUusage = CPUusr[0].split("User");
+                    String[] SYSusage = CPUusr[1].split("System");
+                    rate = Integer.parseInt(CPUusage[1].trim()) + Integer.parseInt(SYSusage[1].trim());
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+       return rate;
     }
 
 }
