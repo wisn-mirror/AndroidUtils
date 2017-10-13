@@ -165,19 +165,20 @@ public class DeviceUtils {
 
         return sensorManager.getSensorList(Sensor.TYPE_ALL);
     }
+
     /**
      * 获取cpu状态
-     *
+     * <p>
      * top -h
-     Usage: top [-m max_procs] [-n iterations] [-d delay] [-s sort_column] [-t] [-h]
-     -m num  Maximum number of processes to display. // 最多显示多少个进程
-     -n num  Updates to show before exiting. // 刷新次数
-     -d num  Seconds to wait between updates. // 刷新间隔时间（默认5秒）
-     -s col  Column to sort by  // 按哪列排序
-     -t      Show threads instead of processes. // 显示线程信息而不是进程
-     -h      Display this help screen. // 显示帮助文档
-     $ top -n 1
-     top -n 1
+     * Usage: top [-m max_procs] [-n iterations] [-d delay] [-s sort_column] [-t] [-h]
+     * -m num  Maximum number of processes to display. // 最多显示多少个进程
+     * -n num  Updates to show before exiting. // 刷新次数
+     * -d num  Seconds to wait between updates. // 刷新间隔时间（默认5秒）
+     * -s col  Column to sort by  // 按哪列排序
+     * -t      Show threads instead of processes. // 显示线程信息而不是进程
+     * -h      Display this help screen. // 显示帮助文档
+     * $ top -n 1
+     * top -n 1
      *
      * @return
      */
@@ -202,7 +203,7 @@ public class DeviceUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-       return rate;
+        return rate;
     }
 
 }
