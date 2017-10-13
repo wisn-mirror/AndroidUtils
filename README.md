@@ -32,6 +32,8 @@ ShortUtils | ShortUtils |
 ToastUtils | ToastUtils |
 ZipUtils | ZipUtils |
 ColorUtils | ColorUtils |
+DeviceUtils | DeviceUtils |
+ActivityUtils | ActivityUtils |
 
 
 ## License
