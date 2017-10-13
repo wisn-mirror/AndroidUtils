@@ -20,19 +20,38 @@ import java.util.List;
  */
 
 public class AppUtils {
+
+    /**
+     * get  ApplicationInfo
+     * @param context
+     * @return
+     */
+    public static ApplicationInfo getApplicationInfo(Context context) {
+        ApplicationInfo applicationInfo = null;
+        try {
+            applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(),
+                                                                             PackageManager.GET_META_DATA);
+            return applicationInfo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * 判断应用是否已安装
      *
      * @param context
      * @param packageName
+     *
      * @return
      */
-    public   boolean isInstalled(Context context, String packageName) {
+    public static boolean isInstalled(Context context, String packageName) {
         boolean hasInstalled = false;
         PackageManager pm = context.getPackageManager();
         List<PackageInfo> list = pm
-    //                .getInstalledPackages(PackageManager.PERMISSION_GRANTED);
-        .getInstalledPackages(0);
+                //                .getInstalledPackages(PackageManager.PERMISSION_GRANTED);
+                .getInstalledPackages(0);
         for (PackageInfo p : list) {
             if (packageName != null && packageName.equals(p.packageName)) {
                 hasInstalled = true;
@@ -47,9 +66,10 @@ public class AppUtils {
      *
      * @param context
      * @param packageName
+     *
      * @return
      */
-    public   boolean isRunning(Context context, String packageName) {
+    public static boolean isRunning(Context context, String packageName) {
         ActivityManager am = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> list = am.getRunningAppProcesses();
@@ -64,19 +84,20 @@ public class AppUtils {
 
     /**
      * 启动一个app
+     *
      * @param context
      * @param packageName
      */
-    public  void openApp(Context  context  ,String packageName) {
+    public static void openApp(Context context, String packageName) {
         try {
             PackageInfo pi = context.getPackageManager().getPackageInfo(packageName, 0);
             PackageManager packageManager = context.getPackageManager();
             Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
             resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             resolveIntent.setPackage(pi.packageName);
-            List<ResolveInfo> apps =packageManager.queryIntentActivities(resolveIntent, 0);
+            List<ResolveInfo> apps = packageManager.queryIntentActivities(resolveIntent, 0);
             ResolveInfo ri = apps.iterator().next();
-            if (ri != null ) {
+            if (ri != null) {
                 String packageName_new = ri.activityInfo.packageName;
                 String className = ri.activityInfo.name;
                 Intent intent = new Intent(Intent.ACTION_MAIN);
