@@ -34,6 +34,10 @@ ZipUtils | ZipUtils |
 ColorUtils | ColorUtils |
 DeviceUtils | DeviceUtils |
 ActivityUtils | ActivityUtils |
+AESUtils | AESUtils |
+Base64Utils | Base64Utils |
+DESUtils | DESUtils |
+NumberUtils | NumberUtils |
 
 
 ## License
