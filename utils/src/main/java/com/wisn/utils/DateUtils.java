@@ -19,8 +19,9 @@ public class DateUtils {
     /** Times in millions of a day */
     public static final long ONE_DAY = ONE_HOUR * 24;
 
-
     /**
+     * 将时间字符串格式化成Date
+     *
      * @param str
      * @param fmt
      *
@@ -39,10 +40,53 @@ public class DateUtils {
         }
     }
 
+    /**
+     * 将时间字符串格式化成Calendar
+     *
+     * @param str
+     * @param fmt
+     *
+     * @return
+     */
+    public static Calendar getCalendarByStr(String str, String fmt) {
+        if (str == null || str.length() == 0) return null;
+        if (fmt == null || fmt.length() == 0) return null;
+        SimpleDateFormat format = new SimpleDateFormat(fmt, Locale.CHINA);
+        try {
+            Date parse = format.parse(str);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(parse);
+            return calendar;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 将时间字符串格式化成 时间戳
+     * @param str
+     * @param fmt
+     * @return
+     */
     public static long getDateTimeByStr(String str, String fmt) {
         Date date = getDateByStr(str, fmt);
         if (date != null) return date.getTime();
         return -1;
+    }
+
+    /**
+     * 是否是相同的一天
+     * @param time1
+     * @param time2
+     * @return
+     */
+    public static boolean isSameDay(long time1, long time2) {
+        Calendar c1 = Calendar.getInstance();
+        c1.setTimeInMillis(time1);
+        Calendar c2 = Calendar.getInstance();
+        c2.setTimeInMillis(time2);
+        return isSameDay(c1, c2);
     }
 
     /**
@@ -317,4 +361,6 @@ public class DateUtils {
         final DateFormat format = new SimpleDateFormat(formater, Locale.getDefault());
         return format.format(new Date(timeInMillions));
     }
+
+
 }
