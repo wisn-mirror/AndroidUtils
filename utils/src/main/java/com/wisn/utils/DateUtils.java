@@ -49,18 +49,11 @@ public class DateUtils {
      * @return
      */
     public static Calendar getCalendarByStr(String str, String fmt) {
-        if (str == null || str.length() == 0) return null;
-        if (fmt == null || fmt.length() == 0) return null;
-        SimpleDateFormat format = new SimpleDateFormat(fmt, Locale.CHINA);
-        try {
-            Date parse = format.parse(str);
+            Date date = getDateByStr(str, fmt);
+            if(date==null) return null;
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(parse);
+            calendar.setTime(date);
             return calendar;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     /**
