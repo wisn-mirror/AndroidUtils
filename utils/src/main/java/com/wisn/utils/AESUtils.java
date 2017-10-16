@@ -17,28 +17,30 @@ public class AESUtils {
     private final static String TAG = "AESUtils";
     private final static String masterPassword = "abcd";//密钥
     private final static String HEX = "0123456789ABCDEF";
-    private final static byte[] masterPasswordByte = {'a','b','c','d'};//密钥
+    private final static byte[] masterPasswordByte = {'a', 'b', 'c', 'd'};//密钥
 
     /**
      * 加密字符串
+     *
      * @param msg 需要加密的字符串
+     *
      * @return String 加密之后的字符串
      */
     public static String AesEncryption(String msg) {
-//        LogUtil.d(TAG, "msg = " + msg);
         String encryptionMsg = "";
         try {
             encryptionMsg = encrypt(masterPassword, msg);
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        LogUtil.d(TAG, "encryptionMsg = " + encryptionMsg);
         return encryptionMsg;
     }
 
     /**
      * 加密数据流
+     *
      * @param buf 需要加密的流
+     *
      * @return byte[] 加密之后的流
      */
     public static byte[] AesEncryption(byte[] buf) {
@@ -53,7 +55,9 @@ public class AESUtils {
 
     /**
      * 解密字符串
+     *
      * @param msg 需要解密的字符串
+     *
      * @return String 解密之后的字符串
      */
     public static String AesDecryption(String msg) {
@@ -64,13 +68,14 @@ public class AESUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        LogUtil.d(TAG, "decryptionMsg = " + decryptionMsg);
         return decryptionMsg;
     }
 
     /**
      * 解密数据流
+     *
      * @param buf 需要解密的数据流
+     *
      * @return byte[]
      */
     public static byte[] AesDecryption(byte[] buf) {
@@ -82,12 +87,6 @@ public class AESUtils {
         return null;
     }
 
-
-
-
-
-
-    //加密字符串 -----------------------------------------------------------------------------------
     public static String encrypt(String seed, String clearText)
             throws Exception {
         byte[] rawKey = getRawKey(seed.getBytes());
@@ -133,7 +132,7 @@ public class AESUtils {
         return cipher.doFinal(clear);
     }
 
-    public static byte[] decrypt(byte[] raw, byte[] encrypted)throws Exception {
+    public static byte[] decrypt(byte[] raw, byte[] encrypted) throws Exception {
         SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, skeySpec);
