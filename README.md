@@ -24,7 +24,7 @@ AppUtils | AppUtils |
 ArrayUtils | ArrayUtils |
 DateUtils | DateUtils |
 DensityUtils | DensityUtils |
-MD5Utils | MD5Utils |
+SHAMD5Utils | SHAMD5Utils |
 NetUtils | NetUtils |
 PreferencesUtils | PreferencesUtils |
 RegexUtils | RegexUtils |

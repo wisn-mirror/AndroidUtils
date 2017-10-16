@@ -47,48 +47,43 @@ public class SHAMD5Utils {
                                          '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
     public static MessageDigest messagedigest = null;
 
-    public static String getMD5(String in, File file) {
-        if (in != null) return getSHAStr(in, "MD5");
+    public static String getMD5(String str, File file) {
+        if (str != null) return getSHAStr(str, "MD5");
         return getSHAFile(file, "MD5");
     }
 
-    public static String getSHA1(String in, File file) {
-        if (in != null) return getSHAStr(in, "SHA-1");
-        return getSHAFile(file, "MD5");
+    public static String getSHA1(String str, File file) {
+        if (str != null) return getSHAStr(str, "SHA-1");
+        return getSHAFile(file, "SHA-1");
 
     }
 
-    public static String getSHA512(String in, File file) {
-        if (in != null) return getSHAStr(in, "SHA-512");
-        return getSHAFile(file, "MD5");
+    public static String getSHA512(String str, File file) {
+        if (str != null) return getSHAStr(str, "SHA-512");
+        return getSHAFile(file, "SHA-512");
 
     }
 
-    public static String getSHA384(String in, File file) {
-        if (in != null) return getSHAStr(in, "SHA-384");
-        return getSHAFile(file, "MD5");
+    public static String getSHA384(String str, File file) {
+        if (str != null) return getSHAStr(str, "SHA-384");
+        return getSHAFile(file, "SHA-384");
 
     }
 
-    public static String getSHA256(String in, File file) {
-        if (in != null) return getSHAStr(in, "SHA-256");
-        return getSHAFile(file, "MD5");
+    public static String getSHA256(String str, File file) {
+        if (str != null) return getSHAStr(str, "SHA-256");
+        return getSHAFile(file, "SHA-256");
 
     }
-
-    public static String getSHA224(String in, File file) {
-        if (in != null) return getSHAStr(in, "SHA-224");
-        return getSHAFile(file, "MD5");
-    }
-
-    /**
+/*
+    *//**
      * 对一个文件获取md5值
      *
      * @return md5串
      *
      * @throws NoSuchAlgorithmException
-     */
-    public static String getMD5(File file) throws IOException,
+     *//*
+    public static String getMD5File(File file) throws IOException,
                                                   NoSuchAlgorithmException {
         messagedigest = MessageDigest.getInstance("MD5");
         FileInputStream in = new FileInputStream(file);
@@ -97,16 +92,16 @@ public class SHAMD5Utils {
                                              file.length());
         messagedigest.update(byteBuffer);
         return bufferToHex(messagedigest.digest());
-    }
+    }*/
 
 
     /**
-     * @param file
+     * @param file  大文件
      * @param algorithm
      *
      * @return
      */
-    public static String getSHAFile(File file, String algorithm) {
+    private static String getSHAFile(File file, String algorithm) {
         try {
             messagedigest = MessageDigest.getInstance(algorithm);
             FileInputStream in = new FileInputStream(file);
@@ -116,9 +111,9 @@ public class SHAMD5Utils {
             messagedigest.update(byteBuffer);
             return bufferToHex(messagedigest.digest());
         } catch (NoSuchAlgorithmException e) {
-            Log.e("SHAMD5Utils", algorithm + "编码出错！");
+            Log.e("SHAMD5Utils", algorithm + " 编码出错！");
         } catch (UnsupportedEncodingException e) {
-            Log.e("SHAMD5Utils", "UTF-8 ,SHA1编码操作，不支持字符集！");
+            Log.e("SHAMD5Utils", "UTF-8 ,SHA编码操作，不支持字符集！");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -138,9 +133,9 @@ public class SHAMD5Utils {
             messagedigest.update(in.getBytes("UTF-8"));
             str = bufferToHex(messagedigest.digest());
         } catch (NoSuchAlgorithmException e) {
-            Log.e("SHAMD5Utils", algorithm + "编码出错！");
+            Log.e("SHAMD5Utils", algorithm + " 编码出错！");
         } catch (UnsupportedEncodingException e) {
-            Log.e("SHAMD5Utils", "UTF-8 ,SHA1编码操作，不支持字符集！");
+            Log.e("SHAMD5Utils", "UTF-8 ,SHA编码操作，不支持字符集！");
         }
         return str;
     }
