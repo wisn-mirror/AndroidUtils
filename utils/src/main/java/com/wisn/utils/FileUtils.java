@@ -19,6 +19,26 @@ import java.util.List;
 public class FileUtils {
 
     /**
+     * 根据文件路径获取文件
+     *
+     * @param filePath 文件路径
+     * @return 文件
+     */
+    public static File getFileByPath(final String filePath) {
+        return isSpace(filePath) ? null : new File(filePath);
+    }
+
+
+    private static boolean isSpace(final String s) {
+        if (s == null) return true;
+        for (int i = 0, len = s.length(); i < len; ++i) {
+            if (!Character.isWhitespace(s.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
      * 拷贝单个文件，使用路径
      *
      * @param fromFilePath
@@ -350,4 +370,13 @@ public class FileUtils {
         return contents;
     }
 
+    /**
+     * 判断文件是否存在
+     *
+     * @param file 文件
+     * @return {@code true}: 存在<br>{@code false}: 不存在
+     */
+    public static boolean isFileExists(final File file) {
+        return file != null && file.exists();
+    }
 }
