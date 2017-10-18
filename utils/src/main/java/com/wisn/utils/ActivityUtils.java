@@ -19,6 +19,7 @@ import java.util.List;
  */
 
 public class ActivityUtils {
+
     /**
      * 判断Activity是否存在
      *
