@@ -10,6 +10,7 @@ import com.wisn.utils.Base64Utils;
 import com.wisn.utils.DateUtils;
 import com.wisn.utils.DeviceUtils;
 import com.wisn.utils.SHAMD5Utils;
+import com.wisn.utils.VibrationUtils;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -26,8 +27,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void onclick(View v) {
         try {
-            testSHAMD5Utils();
+            switch (v.getId()){
+                case R.id.testVibrationUtils:
+//                    VibrationUtils.vibrate(this,2000);
+                    VibrationUtils.vibrate(this,new long[]{400,800,1200,1600},0);
+                    break;
+                case R.id.cancelVibrationUtils:
+                    VibrationUtils.cancel(this);
+                    break;
+            }
             /*
+            testSHAMD5Utils();
             testDeviceUtils();
             testBase64Utils();
             testDateUtils();*/
