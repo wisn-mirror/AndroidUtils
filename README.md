@@ -38,6 +38,9 @@ AESUtils | AESUtils |
 Base64Utils | Base64Utils |
 DESUtils | DESUtils |
 NumberUtils | NumberUtils |
+ThreadPoolUtils | ThreadPoolUtils |
+VibrationUtils | VibrationUtils |
+ThreadPoolUtils | ThreadPoolUtils |
 
 
 ## License
