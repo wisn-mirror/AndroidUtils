@@ -23,13 +23,12 @@ public class AppUtils {
 
     /**
      * get  ApplicationInfo
-     * @param context
      * @return
      */
-    public static ApplicationInfo getApplicationInfo(Context context) {
+    public static ApplicationInfo getApplicationInfo() {
         ApplicationInfo applicationInfo = null;
         try {
-            applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(),
+            applicationInfo = Utils.getApp().getPackageManager().getApplicationInfo(Utils.getApp().getPackageName(),
                                                                              PackageManager.GET_META_DATA);
             return applicationInfo;
         } catch (Exception e) {
@@ -41,14 +40,13 @@ public class AppUtils {
     /**
      * 判断应用是否已安装
      *
-     * @param context
      * @param packageName
      *
      * @return
      */
-    public static boolean isInstalled(Context context, String packageName) {
+    public static boolean isInstalled( String packageName) {
         boolean hasInstalled = false;
-        PackageManager pm = context.getPackageManager();
+        PackageManager pm = Utils.getApp().getPackageManager();
         List<PackageInfo> list = pm
                 //                .getInstalledPackages(PackageManager.PERMISSION_GRANTED);
                 .getInstalledPackages(0);
@@ -64,13 +62,12 @@ public class AppUtils {
     /**
      * 判断应用是否正在运行
      *
-     * @param context
      * @param packageName
      *
      * @return
      */
-    public static boolean isRunning(Context context, String packageName) {
-        ActivityManager am = (ActivityManager) context
+    public static boolean isRunning( String packageName) {
+        ActivityManager am = (ActivityManager) Utils.getApp()
                 .getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> list = am.getRunningAppProcesses();
         for (ActivityManager.RunningAppProcessInfo appProcess : list) {
@@ -85,13 +82,12 @@ public class AppUtils {
     /**
      * 启动一个app
      *
-     * @param context
      * @param packageName
      */
-    public static void openApp(Context context, String packageName) {
+    public static void openApp( String packageName) {
         try {
-            PackageInfo pi = context.getPackageManager().getPackageInfo(packageName, 0);
-            PackageManager packageManager = context.getPackageManager();
+            PackageInfo pi = Utils.getApp().getPackageManager().getPackageInfo(packageName, 0);
+            PackageManager packageManager = Utils.getApp().getPackageManager();
             Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
             resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             resolveIntent.setPackage(pi.packageName);
@@ -105,7 +101,7 @@ public class AppUtils {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 ComponentName cn = new ComponentName(packageName_new, className);
                 intent.setComponent(cn);
-                context.startActivity(intent);
+                Utils.getApp().startActivity(intent);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -113,13 +109,12 @@ public class AppUtils {
     }
 
     /**
-     * @param context
      *
      * @return
      */
-    public static int getAppVersion(Context context) {
+    public static int getAppVersion() {
         try {
-            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
+            return Utils.getApp().getPackageManager().getPackageInfo(Utils.getApp().getPackageName(), 0).versionCode;
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
@@ -127,13 +122,12 @@ public class AppUtils {
     }
 
     /**
-     * @param context
      *
      * @return
      */
-    public static String getAppName(Context context) {
+    public static String getAppName() {
         try {
-            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).packageName;
+            return Utils.getApp().getPackageManager().getPackageInfo(Utils.getApp().getPackageName(), 0).packageName;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -141,54 +135,50 @@ public class AppUtils {
     }
 
     /**
-     * @param context
      * @param file
      */
-    public static void installApk(Context context, File file) {
+    public static void installApk( File file) {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(file),
                               "application/vnd.android.package-archive");
-        context.startActivity(intent);
+        Utils.getApp().startActivity(intent);
     }
 
     /**
      * 安装apk
      *
-     * @param context 上下文
      * @param file    APK文件uri
      */
-    public static void installApk(Context context, Uri file) {
+    public static void installApk(Uri file) {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
         intent.setDataAndType(file, "application/vnd.android.package-archive");
-        context.startActivity(intent);
+        Utils.getApp().startActivity(intent);
     }
 
     /**
-     * @param context
      * @param packageName
      */
-    public static void uninstallApk(Context context, String packageName) {
+    public static void uninstallApk(String packageName) {
         Intent intent = new Intent(Intent.ACTION_DELETE);
         Uri packageURI = Uri.parse("package:" + packageName);
         intent.setData(packageURI);
-        context.startActivity(intent);
+        Utils.getApp().startActivity(intent);
     }
 
     /**
      * 获取系统中所有的应用
      *
-     * @param context 上下文
      *
      * @return 应用信息List
      */
-    public static List<PackageInfo> getAllApps(Context context) {
+    public static List<PackageInfo> getAllApps() {
 
         List<PackageInfo> apps = new ArrayList<PackageInfo>();
-        PackageManager pManager = context.getPackageManager();
+        PackageManager pManager = Utils.getApp().getPackageManager();
         List<PackageInfo> paklist = pManager.getInstalledPackages(0);
         for (int i = 0; i < paklist.size(); i++) {
             PackageInfo pak = paklist.get(i);
@@ -206,14 +196,13 @@ public class AppUtils {
     }
 
     /**
-     * @param context
      * @param packageName
      *
      * @return
      */
-    public static String getSign(Context context, String packageName) {
+    public static String getSign(String packageName) {
         try {
-            PackageInfo pis = context.getPackageManager()
+            PackageInfo pis = Utils.getApp().getPackageManager()
                                      .getPackageInfo(packageName,
                                                      PackageManager.GET_SIGNATURES);
             return hexdigest(pis.signatures[0].toByteArray());
@@ -274,12 +263,11 @@ public class AppUtils {
     }
 
     /**
-     * @param context
      *
      * @return
      */
-    public static int getDeviceUsableMemory(Context context) {
-        ActivityManager am = (ActivityManager) context.getSystemService(
+    public static int getDeviceUsableMemory() {
+        ActivityManager am = (ActivityManager) Utils.getApp().getSystemService(
                 Context.ACTIVITY_SERVICE);
         ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
         am.getMemoryInfo(mi);

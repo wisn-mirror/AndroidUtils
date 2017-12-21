@@ -75,14 +75,14 @@ public class SHAMD5Utils {
         return getSHAFile(file, "SHA-256");
 
     }
-/*
-    *//**
+
+    /**
      * 对一个文件获取md5值
      *
      * @return md5串
      *
      * @throws NoSuchAlgorithmException
-     *//*
+     */
     public static String getMD5File(File file) throws IOException,
                                                   NoSuchAlgorithmException {
         messagedigest = MessageDigest.getInstance("MD5");
@@ -92,7 +92,7 @@ public class SHAMD5Utils {
                                              file.length());
         messagedigest.update(byteBuffer);
         return bufferToHex(messagedigest.digest());
-    }*/
+    }
 
 
     /**

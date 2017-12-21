@@ -78,22 +78,20 @@ public class FileUtils {
     /**
      * 拷贝Assets文件到指定文件
      *
-     * @param context
      * @param assetsFile
      * @param toDirPath
      * @param toFileName
      *
      * @return
      */
-    public static boolean copyAssetsFileToFile(Context context,
-                                               String assetsFile,
+    public static boolean copyAssetsFileToFile(String assetsFile,
                                                String toDirPath,
                                                String toFileName) {
-        if (assetsFile == null || context == null || toDirPath == null || toFileName == null) return false;
+        if (assetsFile == null || Utils.getApp() == null || toDirPath == null || toFileName == null) return false;
         try {
             File toFile = new File(toDirPath);
             if (!toFile.exists()) toFile.mkdirs();
-            return copyFileStream(context.getAssets().open(assetsFile),
+            return copyFileStream(Utils.getApp().getAssets().open(assetsFile),
                                   new FileOutputStream(new File(toFile, toFileName)));
         } catch (IOException e) {
             e.printStackTrace();
@@ -104,23 +102,22 @@ public class FileUtils {
     /**
      * 拷贝Assets文件夹到指定文件夹
      *
-     * @param context
      * @param assetsDir
      * @param toDirPath
      *
      * @return
      */
-    public static boolean copyAssetsDirToDir(Context context, String assetsDir, String toDirPath) {
-        if (assetsDir == null || context == null || toDirPath == null) return false;
+    public static boolean copyAssetsDirToDir( String assetsDir, String toDirPath) {
+        if (assetsDir == null || Utils.getApp() == null || toDirPath == null) return false;
         try {
-            String[] assetsFiles = context.getAssets().list(assetsDir);
+            String[] assetsFiles = Utils.getApp().getAssets().list(assetsDir);
             if (assetsFiles == null || assetsFiles.length == 0) return false;
             for (String fileName : assetsFiles) {
                 File toFile = new File(toDirPath);
                 if (!toFile.exists()) {
                     toFile.mkdirs();
                 }
-                copyAssetsFileToFile(context, assetsDir + File.separator + fileName, toDirPath, fileName);
+                copyAssetsFileToFile(assetsDir + File.separator + fileName, toDirPath, fileName);
 
             }
         } catch (IOException e) {
@@ -389,26 +386,24 @@ public class FileUtils {
 
     /**
      * 获取所有的缓存大小
-     * @param context
      * @return
      * @throws Exception
      */
-    public static String getTotalCacheSize(Context context) throws Exception {
-        long cacheSize = getFolderSize(context.getCacheDir());
+    public static String getTotalCacheSize() throws Exception {
+        long cacheSize = getFolderSize(Utils.getApp().getCacheDir());
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            cacheSize += getFolderSize(context.getExternalCacheDir());
+            cacheSize += getFolderSize(Utils.getApp().getExternalCacheDir());
         }
         return getFormatSize(cacheSize);
     }
 
     /**
      * 清除缓存
-     * @param context
      */
-    public static void clearAllCache(Context context) {
-        deleteDir(context.getCacheDir());
+    public static void clearAllCache() {
+        deleteDir(Utils.getApp().getCacheDir());
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            deleteDir(context.getExternalCacheDir());
+            deleteDir(Utils.getApp().getExternalCacheDir());
         }
     }
 

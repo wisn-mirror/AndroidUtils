@@ -374,8 +374,8 @@ public class NetUtils {
      *
      * @return
      */
-    public static  boolean isNetConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static  boolean isNetConnected() {
+        ConnectivityManager cm = (ConnectivityManager) Utils.getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {
             NetworkInfo[] infos = cm.getAllNetworkInfo();
             if (infos != null) {
@@ -389,30 +389,15 @@ public class NetUtils {
         return false;
     }
 
-    /**
-     * 检测wifi是否连接
-     *
-     * @return
-     */
-    public static boolean isWifiConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm != null) {
-            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-            if (networkInfo != null
-                && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     /**
      * 检测3G是否连接
      *
      * @return
      */
-    public static boolean is3gConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean is3gConnected() {
+        ConnectivityManager cm = (ConnectivityManager) Utils.getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             if (networkInfo != null

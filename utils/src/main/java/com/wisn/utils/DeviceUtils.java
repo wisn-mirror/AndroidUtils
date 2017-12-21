@@ -9,10 +9,12 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,8 +30,8 @@ public class DeviceUtils {
      *
      * @return
      */
-    public static boolean isGpsEnabled(Context context) {
-        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+    public static boolean isGpsEnabled() {
+        LocationManager lm = (LocationManager) Utils.getApp().getSystemService(Context.LOCATION_SERVICE);
         List<String> accessibleProviders = lm.getProviders(true);
         for (String name : accessibleProviders) {
             if ("gps".equalsIgnoreCase(name)) {
@@ -44,10 +46,10 @@ public class DeviceUtils {
      *
      * @return - Network operator name.
      */
-    public static String getNetworkOperatorName(Context context) {
+    public static String getNetworkOperatorName() {
         TelephonyManager
                 telephonyManager =
-                (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+                (TelephonyManager) Utils.getApp().getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getSimOperatorName();
     }
 
@@ -93,21 +95,35 @@ public class DeviceUtils {
      *
      * @return - Device IMEI number.
      */
-    public static String getDeviceId(Context context) {
+    public static String getDeviceId() {
         String deviceId = null;
         TelephonyManager
                 telephonyManager =
-                (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+                (TelephonyManager) Utils.getApp().getSystemService(Context.TELEPHONY_SERVICE);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             deviceId = telephonyManager.getDeviceId();
         }
         if (deviceId == null || deviceId.isEmpty()) {
-            deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+            deviceId = Settings.Secure.getString(Utils.getApp().getContentResolver(), Settings.Secure.ANDROID_ID);
         }
-        Pattern p = Pattern.compile("IMEI", Pattern.CASE_INSENSITIVE);
-        Matcher m = p.matcher(deviceId);
-        deviceId = m.replaceAll(" ").replace(":", " ");
-        return deviceId.trim();
+        deviceId = telephonyManager.getDeviceId();
+        if(!TextUtils.isEmpty(deviceId)){
+            deviceId=deviceId.toLowerCase();
+            deviceId = deviceId.replace("imei", "");
+            if(!TextUtils.isEmpty(deviceId)){
+                deviceId = deviceId.replace(":", "");
+                return deviceId.trim();
+            }
+        }
+        return deviceId;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static String getAndroidId(){
+        return Settings.Secure.getString(Utils.getApp().getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
     /**
@@ -115,10 +131,10 @@ public class DeviceUtils {
      *
      * @return - Device IMSI number.
      */
-    public static String getIMSINumber(Context context) {
+    public static String getIMSINumber() {
         TelephonyManager
                 telephonyManager =
-                (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+                (TelephonyManager) Utils.getApp().getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getSubscriberId();
     }
 
@@ -127,10 +143,35 @@ public class DeviceUtils {
      *
      * @return - Device WiFi MAC.
      */
-    public static String getMACAddress(Context context) {
-        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+    public static String getMACAddress() {
+        WifiManager wifiManager = (WifiManager) Utils.getApp().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wInfo = wifiManager.getConnectionInfo();
         return wInfo.getMacAddress();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static String getMACAddressByFile() {
+        String macSerial = null;
+        String str = "";
+        try {
+            Process pp = Runtime.getRuntime().exec("cat /sys/class/net/wlan0/address ");
+            InputStreamReader ir = new InputStreamReader(pp.getInputStream());
+            LineNumberReader input = new LineNumberReader(ir);
+            for (; null != str; ) {
+                str = input.readLine();
+                if (str != null) {
+                    macSerial = str.trim();// 去空格
+                    break;
+                }
+            }
+        } catch (IOException ex) {
+            // 赋予默认值
+            ex.printStackTrace();
+        }
+        return  macSerial;
     }
 
     /**
@@ -138,10 +179,10 @@ public class DeviceUtils {
      *
      * @return - Device SIM serial number.
      */
-    public static String getSimSerialNumber(Context context) {
+    public static String getSimSerialNumber() {
         TelephonyManager
                 telephonyManager =
-                (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+                (TelephonyManager) Utils.getApp().getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getSimSerialNumber();
     }
 
@@ -159,9 +200,9 @@ public class DeviceUtils {
      *
      * @return - List of all the sensors available on the device.
      */
-    public static List<Sensor> getAllSensors(Context context) {
+    public static List<Sensor> getAllSensors() {
         SensorManager sensorManager =
-                (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+                (SensorManager) Utils.getApp().getSystemService(Context.SENSOR_SERVICE);
 
         return sensorManager.getSensorList(Sensor.TYPE_ALL);
     }

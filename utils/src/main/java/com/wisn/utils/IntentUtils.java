@@ -19,25 +19,23 @@ public class IntentUtils {
 
     /**
      * 获取安装App（支持7.0）的意图
-     * @param context
      * @param filePath  文件路径
      * @param authority 7.0及以上安装需要传入清单文件中的{@code <provider>}的authorities属性
      *                  <br>参看https://developer.android.com/reference/android/support/v4/content/FileProvider.html
      * @return intent
      */
-    public static Intent getInstallAppIntent(Context context ,final String filePath, final String authority) {
-        return getInstallAppIntent(context ,FileUtils.getFileByPath(filePath), authority);
+    public static Intent getInstallAppIntent(final String filePath, final String authority) {
+        return getInstallAppIntent(FileUtils.getFileByPath(filePath), authority);
     }
 
     /**
      * 获取安装App(支持7.0)的意图
-     * @param context
      * @param file      文件
      * @param authority 7.0及以上安装需要传入清单文件中的{@code <provider>}的authorities属性
      *                  <br>参看https://developer.android.com/reference/android/support/v4/content/FileProvider.html
      * @return intent
      */
-    public static Intent getInstallAppIntent(Context context , final File file, final String authority) {
+    public static Intent getInstallAppIntent(final File file, final String authority) {
         if (file == null) return null;
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri data;
@@ -46,7 +44,7 @@ public class IntentUtils {
             data = Uri.fromFile(file);
         } else {
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            data = FileProvider.getUriForFile(context.getApplicationContext(), authority, file);
+            data = FileProvider.getUriForFile(Utils.getApp().getApplicationContext(), authority, file);
         }
         intent.setDataAndType(data, type);
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -66,12 +64,11 @@ public class IntentUtils {
 
     /**
      * 获取打开App的意图
-     * @param context
      * @param packageName 包名
      * @return intent
      */
-    public static Intent getLaunchAppIntent(Context context ,final String packageName) {
-        return context.getApplicationContext().getPackageManager().getLaunchIntentForPackage(packageName);
+    public static Intent getLaunchAppIntent(final String packageName) {
+        return Utils.getApp().getApplicationContext().getPackageManager().getLaunchIntentForPackage(packageName);
     }
 
     /**
