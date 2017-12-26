@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
             switch (v.getId()){
                 case R.id.testVibrationUtils:
 //                    VibrationUtils.vibrate(this,2000);
-                    VibrationUtils.vibrate(this,new long[]{400,800,1200,1600},0);
+                    VibrationUtils.vibrate(new long[]{400,800,1200,1600},0);
                     break;
                 case R.id.cancelVibrationUtils:
-                    VibrationUtils.cancel(this);
+                    VibrationUtils.cancel();
                     break;
             }
             /*
